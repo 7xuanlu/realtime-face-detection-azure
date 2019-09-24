@@ -1,0 +1,24 @@
+{
+  "name": "realtime-demo-page",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.16.3",
+    "prophetjs": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CasparChou/Realtime-Demo-Page.git"
+  },
+  "author": "Caspar Chou",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CasparChou/Realtime-Demo-Page/issues"
+  },
+  "homepage": "https://github.com/CasparChou/Realtime-Demo-Page#readme"
+}
