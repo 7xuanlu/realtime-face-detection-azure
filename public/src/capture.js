@@ -7,11 +7,9 @@
   // Replace <location> with your applied region.
   const detect_UriBase = 'https://westus2.api.cognitive.microsoft.com/face/v1.0/detect';
   const params = {
-    'returnFaceLandmarks': 'false',
-    'returnFaceAttributes': 'age,gender'
+    'returnFaceAttributes': 'age,gender,smile,makeup'
   };
   const detect_uri = detect_UriBase + "?" + $.param(params);
-
 
   var time = Date.now()
 
@@ -185,70 +183,64 @@
       }
     }
 
-
     results.forEach(each => {
-      console.log(each)
-        each['box'] = conversion(each)
-        console.log(each.box)
+      each['box'] = conversion(each);
 
-        const ctx = canvas.getContext('2d')
+      const ctx = canvas.getContext('2d');
 
-        labelText = `${each.box.gender}, ${each.box.age}`
+      labelText = `${each.box.gender}, ${each.box.age}, 顏值 ${each.faceValue}`;
 
-        const label = {
-          text: labelText,
-          textLeft: each.box.left + 5,
-          textTop: each.box.top - 6,
-          textColor: "white",
-          textFontStyle: "16px Microsoft JhengHei UI",
-          rectLeft: each.box.left - 1,
-          rectTop: each.box.top - 22,
-          rectWidth: labelText.length * 8 + 15, // [JhengHei Font] Each font size = 8
-          rectHeight: 22,
-          rectColor: "rgba(161, 230, 34, 0.8)"
-        }
+      const label = {
+        text: labelText,
+        textLeft: each.box.left + 5,
+        textTop: each.box.top - 6,
+        textColor: "white",
+        textFontStyle: "16px Microsoft JhengHei UI",
+        rectLeft: each.box.left - 1,
+        rectTop: each.box.top - 22,
+        rectWidth: labelText.length * 8 + 15, // [JhengHei Font] Each font size = 8
+        rectHeight: 22,
+        rectColor: "rgba(161, 230, 34, 0.8)"
+      }
 
-        const boundingBox = {
-          left: each.box.left,
-          top: each.box.top,
-          width: each.box.width,
-          height: each.box.height,
-          borderColor: "rgba(161, 230, 34, 0.8)",
-          borderWidth: "2"
-        }
+      const boundingBox = {
+        left: each.box.left,
+        top: each.box.top,
+        width: each.box.width,
+        height: each.box.height,
+        borderColor: "rgba(161, 230, 34, 0.8)",
+        borderWidth: "2"
+      }
 
-        drawBoundingBox(ctx, boundingBox)
-        drawLabelRect(ctx, label)
-        drawLabel(ctx, label)
-      });
+      drawBoundingBox(ctx, boundingBox)
+      drawLabelRect(ctx, label)
+      drawLabel(ctx, label)
+    });
     //})
   }
 
   function analyzePicture(data) {
     faceApiCall(data, (results) => {
+      console.log(results);
       if (results.length == 0) {
         console.log("no face detected");
         clearRect(canvas);
       } else {
         console.log("face detected");
         clearRect(canvas);
+        results = calculateFaceValue(results)
         renderFaceResults(results);
       }
-      // identifyFaceAsync(results[0].faceId, (results1) => {
-      //   if (results1[0].candidates.length == 0) {
-      //     console.log("person id not exist")
-      //     clearRect(canvas);
-      //     renaderFaceResults(results, results1);
-      //   }
-      //   else {
-      //     console.log("person id exist");
-      //     getPersonAsync(results1[0].candidates[0].personId, (results2) => {
-      //       clearRect(canvas);
-      //       renaderFaceResults(results, results1, results2.name);
-      //     })
-      //   }
-      // });
     });
+  }
+
+  const calculateFaceValue = (results) => {
+    results.forEach(result => {
+      let faceValue = 80 + result.faceAttributes.smile * 6.7 + ((result.faceAttributes.gender === "female") ? 3.3 : 2.8) + (((result.faceAttributes.makeup.eyeMakeup === true || result.faceAttributes.makeup.lipMakeup === true)) ? 2.8 : 0);
+      result.faceValue = faceValue.toFixed(2);
+    });
+
+    return results;
   }
 
   // Set up our event listener to run the startup process
