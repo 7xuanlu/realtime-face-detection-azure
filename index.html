@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Realtime Object Detection</title>
+	<meta charset='utf-8'>
+	<link rel="stylesheet" href="src/main.css" type="text/css" media="all">
+	<link rel="stylesheet" href="src/toastr.min.css" type="text/css">
+	<script type="text/javascript" src="src/identify.js"></script>
+	<script src="http://code.jquery.com/jquery.js" type="text/javascript"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/javascript-canvas-to-blob/3.6.0/js/canvas-to-blob.min.js"></script>
+	<script src="src/capture.js"></script>
+</head>
+
+<body>
+	<ul class="prophet"></ul>
+	<div class="contentarea">
+		<h1 style="text-align: center">
+			Realtime Face Detection
+		</h1>
+		<div class="camera">
+			<canvas id="canvas2">
+			</canvas>
+			<video id="video">Video stream not available.</video>
+			<canvas id="canvas">
+			</canvas>
+		</div>
+	</div>
+	<div class="contentarea" style="margin-top: 75vh;text-align:center">
+		<img src="src/img/logo.png">
+	</div>
+</body>
+
+</html>
