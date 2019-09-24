@@ -1,5 +1,4 @@
 (function () {
-  document.write('<script type="text/javascript" src="src/identify.js"></script>');
   const SNATSHOT_MS = 800 //800
 
   // Replace <Subscription Key> with your valid subscription key.
